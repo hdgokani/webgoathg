@@ -16,9 +16,10 @@ jobs:
         with:
           # Checkmarx Project Name (defaults to GitHub repository name if not provided)
           project_name: ${{ github.repository }}
-          cx_tenant: ast_abdul_ansari
-          base_uri: eu.ast.checkmarx.net 
-          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
-          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
           # Branch Name
           branch: ${{ github.head_ref || github.ref }}
+          cx_tenant: ast_abdul_ansari
+          base_uri: https://eu.ast.checkmarx.net 
+          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
+          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
+        
