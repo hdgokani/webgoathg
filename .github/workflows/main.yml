@@ -77,8 +77,20 @@ jobs:
           # The base URL for the Checkmarx One Servers
           base_url: https://eu.ast.checkmarx.net
           # The environment ID previously created in the Frontend
-          environment_id: bd462e37-c712-440a-9e0c-7984b09d5252
+          environment_id: e4079a87-0b02-4195-b2fc-10149df89a6f
           output: ${{ github.workspace }}/output_fold #./output
+ 
+      - name: Reclaim Output Directory
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+ 
+      - name: Upload DAST Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dast-report
+          path: ${{ github.workspace }}/output_fold
+ 
  
       - name: Reclaim Output Directory
         if: always()
