@@ -76,7 +76,7 @@ jobs:
           # The type of scan to perform (web, api)
           command: web
           # The path to the ZAP configuration file
-          config: ./gin_juice.yaml
+          config: ../gin_juice.yaml
           # The base URL for the Checkmarx One Servers
           base_url: https://eu.ast.checkmarx.net
           # The environment ID previously created in the Frontend
