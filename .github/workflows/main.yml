@@ -68,7 +68,7 @@ jobs:
       - name: Checkmarx DAST Scan
         uses: Checkmarx/dast-github-action@v2.3.0
         env:
-          CX_APIKEY: ${{ secrets.CX_APIKEY }}
+          CX_APIKEY: ${{ secrets.HGGIT }}
         with:
           # The type of scan to perform (web, api)
           command: web
