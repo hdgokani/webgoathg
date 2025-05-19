@@ -28,7 +28,7 @@ jobs:
     steps:
       # Step 1: Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
  
       # Step 2: Run Checkmarx AST Scan
       - name: Checkmarx AST Github Action
@@ -57,7 +57,7 @@ jobs:
  
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
  
       - name: Create Directory for Output
         run: mkdir ${{ github.workspace }}/output_fold
