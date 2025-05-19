@@ -68,10 +68,7 @@ jobs:
       - name: Checkmarx DAST Scan
         uses: Checkmarx/dast-github-action@v2.3.0
         env:
-          # Client ID for AST portal authentication
-          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
-          # Secret key for AST portal authentication
-          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
+          CX_APIKEY: ${{ secrets.CX_APIKEY }}
         with:
           # The type of scan to perform (web, api)
           command: web
@@ -80,7 +77,7 @@ jobs:
           # The base URL for the Checkmarx One Servers
           base_url: https://eu.ast.checkmarx.net
           # The environment ID previously created in the Frontend
-          environment_id: e4079a87-0b02-4195-b2fc-10149df89a6f
+          environment_id: bd462e37-c712-440a-9e0c-7984b09d5252
           output: ${{ github.workspace }}/output_fold #./output
  
       - name: Reclaim Output Directory
