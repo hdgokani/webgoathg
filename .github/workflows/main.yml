@@ -32,7 +32,7 @@ jobs:
  
       # Step 2: Run Checkmarx AST Scan
       - name: Checkmarx AST Github Action
-        uses: Checkmarx/ast-github-action@2.0.23
+        uses: Checkmarx/ast-github-action@2.3.19
         with:
           # Provide the AST portal URL
           base_uri: https://eu.ast.checkmarx.net
