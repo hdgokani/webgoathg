@@ -68,7 +68,10 @@ jobs:
       - name: Checkmarx DAST Scan
         uses: Checkmarx/dast-github-action@v2.3.0
         env:
-          CX_APIKEY: ${{ secrets.CX_APIKEY }}
+          # Client ID for AST portal authentication
+          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
+          # Secret key for AST portal authentication
+          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
         with:
           # The type of scan to perform (web, api)
           command: web
