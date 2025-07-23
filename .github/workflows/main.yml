@@ -29,7 +29,7 @@ jobs:
       # Step 1: Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v3
- 
+  
       # Step 2: Run Checkmarx AST Scan
       - name: Checkmarx AST Github Action
         uses: Checkmarx/ast-github-action@2.0.23
