@@ -1,104 +1,43 @@
-name: Checkmarx Security Scan
- 
+name: Checkmarx SCA Scan
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-      - test
-      - dev
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches:
-      - main
       - master
-  workflow_dispatch:
- 
-permissions:
-  contents: read
- 
+      - develop
+  pull_request:
+
 jobs:
-  checkmarx-ast:
-    permissions:
-      contents: read # Required for actions/checkout to fetch code
-      security-events: write # Needed for GitHub/codeql-action/upload-sarif
-      actions: read # Only required for private repositories
- 
-    runs-on: ubuntu-latest
- 
+  checkmarx-sca:
+    runs-on: windows-latest
+
     steps:
-      # Step 1: Checkout Repository
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-  
-      # Step 2: Run Checkmarx AST Scan
-      - name: Checkmarx AST Github Action
-        uses: Checkmarx/ast-github-action@2.0.23
-        with:
-          # Provide the AST portal URL
-          base_uri: https://eu.ast.checkmarx.net
-          # Provide the Tenant for AST portal URL
-          cx_tenant: ast_abdul_ansari
-          # Client ID for AST portal authentication
-          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
-          # Secret key for AST portal authentication
-          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          # Checkmarx Project Name (defaults to GitHub repository name if not provided)
-          project_name: ${{ github.repository }}
-          # Branch Name
-          branch: ${{ github.head_ref || github.ref }}
- 
-  checkmarx-dast:
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
- 
-    runs-on: ubuntu-latest
- 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
- 
-      - name: Create Directory for Output
-        run: mkdir ${{ github.workspace }}/output_fold
- 
-      - name: Change Directory Owner
-        run: sudo chown -R 1000:1000 ${{ github.workspace }}
- 
-      - name: Checkmarx DAST Scan
-        uses: Checkmarx/dast-github-action@v2.3.0
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Checkmarx SCA Resolver
+        run: |
+          Invoke-WebRequest -OutFile ScaResolver-win64.zip -URI https://sca-downloads.s3.amazonaws.com/cli/1.13.4/ScaResolver-win64.zip
+          tar.exe -xf ScaResolver-win64.zip
+          Remove-Item ScaResolver-win64.zip
+        shell: pwsh
+
+      - name: Install NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Run Checkmarx AST SCA Scan
         env:
-          CX_APIKEY: ${{ secrets.HGGIT }}
-        with:
-          # The type of scan to perform (web, api)
-          command: web
-          # The path to the ZAP configuration file
-          config: ./gin_juice.yaml
-          # The base URL for the Checkmarx One Servers
-          base_url: https://eu.ast.checkmarx.net
-          # The environment ID previously created in the Frontend
-          environment_id: e4079a87-0b02-4195-b2fc-10149df89a6f
-          output: ${{ github.workspace }}/output_fold #./output
- 
-      - name: Reclaim Output Directory
-        if: always()
-        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
- 
-      - name: Upload DAST Logs
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dast-report
-          path: ${{ github.workspace }}/output_fold
- 
- 
-      - name: Reclaim Output Directory
-        if: always()
-        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
- 
-      - name: Upload DAST Logs
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dast-report
-          path: ${{ github.workspace }}/output_fold
+          CHECKMARX_CLIENT_ID: ${{ secrets.CX_CLIENT_ID }}
+          CHECKMARX_CLIENT_SECRET: ${{ secrets.CX_CLIENT_SECRET }}
+#          CHECKMARX_API_BASE_URL: ${{ secrets.CX_API_URL }}
+          CHECKMARX_TENANT: ast_abdul_ansari
+        run: |
+          ./ScaResolver/sca-resolver.exe \
+            --project-name "${{ github.event.repository.name }}" \
+            --branch "${{ github.head_ref || github.ref_name }}" \
+            --base-url "${{ env.CHECKMARX_API_BASE_URL }}" \
+            --tenant "${{ env.CHECKMARX_TENANT }}" \
+            --client-id "${{ env.CHECKMARX_CLIENT_ID }}" \
+            --client-secret "${{ env.CHECKMARX_CLIENT_SECRET }}"
