@@ -76,4 +76,4 @@ jobs:
             --tenant ast_abdul_ansari \
             --client-id HarshGJ1 \
             --client-secret dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm \
-            --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Correct path to ScaResolver
+            --sca-resolver /home/runner/work/webgoathg/webgoathg/ScaResolver  # Correct path to ScaResolver
