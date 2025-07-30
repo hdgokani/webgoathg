@@ -8,7 +8,7 @@ on:
 
 jobs:
   sca-scan:
-    name: CxSCA Scan using Resolver
+    name: Run CxSCA Scan using Resolver
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +21,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Download CxSCA Resolver
+      - name: Download latest CxSCA Resolver
         run: |
-          curl -sSL -o CxSCAResolver.jar https://sca-downloads.s3.amazonaws.com/cli/latest/CxSCAResolver.jar
+          curl -L -o CxSCAResolver.jar https://github.com/CheckmarxDev/sca-resolver/releases/latest/download/CxSCAResolver.jar
           file CxSCAResolver.jar
           if [ ! -s CxSCAResolver.jar ]; then
             echo "❌ Downloaded JAR is invalid or empty"
