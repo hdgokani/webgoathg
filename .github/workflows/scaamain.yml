@@ -24,8 +24,8 @@ jobs:
         run: |
           .\ScaResolver.exe `
             --account "ast_abdul_ansari" `
-            --username "HarshGJ1" `
-            --password "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
+            --username "harsh.gokani@checkmarx.com" `
+            --password "Hdg123456!@#$%^" `
             --server-url "https://eu.ast.checkmarx.net" `
             --sca-app-url "https://eu.sca.checkmarx.net" `
             --project-name "CxSCAResolver" `
