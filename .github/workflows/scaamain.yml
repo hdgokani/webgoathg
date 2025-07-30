@@ -78,4 +78,5 @@ jobs:
             --client-secret dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm \
             --scan-types sca \
             --sca-resolver /home/runner/work/webgoathg/webgoathg/ScaResolver \
+            --report-sbom-format CycloneDxJson
             --threshold "sca-critical=2;sca-high=1000;sca-medium=1000;sca-low=1000" 
