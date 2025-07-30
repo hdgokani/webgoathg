@@ -23,10 +23,10 @@ jobs:
       - name: Run CxSCA Scan (Windows)
         run: |
           .\ScaResolver.exe `
-            --client-id "${{ secrets.CX_CLIENT_ID }}" `
-            --client-secret "${{ secrets.CX_CLIENT_SECRET }}" `
-            --tenant "${{ secrets.CX_TENANT }}" `
-            --base-uri "${{ secrets.CX_BASE_URI }}" `
-            --project-name "${{ secrets.CX_PROJECT_NAME }}" `
+            --client-id "HarshGJ1" `
+            --client-secret "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
+            --tenant "ast_abdul_ansari" `
+            --base-uri "https://eu.ast.checkmarx.net" `
+            --project-name "CxSCAResolver" `
             --scan-types sca `
             --include-sources . 
