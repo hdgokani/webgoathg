@@ -20,13 +20,14 @@ jobs:
           curl -L -o ScaResolver.zip https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-win64.zip
           tar -xf ScaResolver.zip || powershell -Command "Expand-Archive -Path ScaResolver.zip -DestinationPath ."
 
-      - name: Run CxSCA Scan (Windows)
-        run: |
-          .\ScaResolver.exe `
-            --client-id "HarshGJ1" `
-            --client-secret "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
-            --tenant "ast_abdul_ansari" `
-            --base-uri "https://eu.ast.checkmarx.net" `
-            --project-name "CxSCAResolver" `
-            --scan-types sca `
-            --include-sources . 
+        - name: Run CxSCA Scan (Windows, Resolver v2)
+          run: |
+            .\ScaResolver.exe `
+              --account "ast_abdul_ansari" `
+              --username "HarshGJ1" `
+              --password "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
+              --server-url "https://eu.ast.checkmarx.net" `
+              --project-name "CxSCAResolver" `
+              --scan-types sca `
+              --include-sources . 
+              --scan-path .
