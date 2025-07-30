@@ -21,14 +21,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Download latest CxSCA Resolver
+      - name: Download latest CxSCA Resolver (via wget)
         run: |
-          curl -L -o CxSCAResolver.jar https://github.com/CheckmarxDev/sca-resolver/releases/latest/download/CxSCAResolver.jar
+          wget https://github.com/CheckmarxDev/sca-resolver/releases/latest/download/CxSCAResolver.jar -O CxSCAResolver.jar
           file CxSCAResolver.jar
           if [ ! -s CxSCAResolver.jar ]; then
-            echo "❌ Downloaded JAR is invalid or empty"
-            exit 1
+          echo "❌ Downloaded JAR is invalid or empty"
+          exit 1
           fi
+
 
       - name: Run CxSCA Scan
         run: |
