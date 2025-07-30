@@ -24,7 +24,7 @@ jobs:
         run: |
           .\ScaResolver.exe `
             --account "ast_abdul_ansari" `
-            --username "HarGJ1" `
+            --username "HarshGJ1" `
             --password "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
             --server-url "https://eu.ast.checkmarx.net" `
             --sca-app-url "https://eu.sca.checkmarx.net" `
