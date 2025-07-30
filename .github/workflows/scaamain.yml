@@ -1,42 +1,79 @@
 name: Checkmarx SCA Scan (Windows)
-
+ 
 on:
   push:
-    branches: [main]
+    branches:
+      [main]
   pull_request:
-    branches: [main]
-
+    branches:
+      [main]
+ 
 jobs:
   sca-scan:
-    name: Run CxSCA Scan using Windows Resolver
+    name: Download and Extract CxSCA Resolver
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-
-      - name: Download and extract CxSCA Resolver (Windows)
+ 
+      - name: Download and extract CxSCA Resolver (Linux)
         run: |
-          curl -L -o ScaResolver-musl64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-musl64.tar.gz
-          tar -xzf ScaResolver-musl64.tar.gz
-    #      chmod +x ScaResolver
-     #     ./ScaResolver --help
-
-
-      - name: Checkmarx AST Github Action
-        # You may pin to the exact commit or the version.
-        # uses: Checkmarx/ast-github-action@749fec53e0db0f6404a97e2e0807c3e80e3583a7
-        uses: Checkmarx/ast-github-action@2.0.23
+          curl -L -o ScaResolver-linux64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz
+          tar -xzf ScaResolver-linux64.tar.gz
+          chmod 755 ./ScaResolver  # Ensure proper permissions
+          ls -l ./ScaResolver  # Verify permissions
+          ./ScaResolver --help  # Test executable
+ 
+      - name: Upload CxSCA Resolver as artifact
+        uses: actions/upload-artifact@v4
         with:
-          # Provide the AST portal URL
-          base_uri: https://eu.ast.checkmarx.net
-          # Provide the Tenant for AST portal URL
-          cx_tenant: ast_abdul_ansari
-          # Client ID for AST portal authentication
-          cx_client_id: HarshGJ1
-          # Secret key for AST portal authentication
-          cx_client_secret: dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm
-          # Additional parameters for AST scan
-          additional_params: '--sca-resolver ./ScaResolver'
-          # Repository name for PR decoration
-         
+          name: ScaResolver
+          path: ./ScaResolver
+ 
+  ast-scan:
+    name: Run Checkmarx AST Scan using CLI
+    runs-on: ubuntu-latest
+    needs: sca-scan
+ 
+    steps:
+ 
+      - name: Download CxSCA Resolver artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ScaResolver
+ 
+      - name: Verify artifact location and permissions
+        run: |
+          echo "Listing contents of the workspace directory to verify artifact download:"
+          ls -l /home/runner/work/NeuroNurture/NeuroNurture  # Typical path for artifact downloads
+          echo "Listing contents of ScaResolver location:"
+          ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify artifact is here
+          echo "Checking if ScaResolver is an executable:"
+          file /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify it's a valid executable
+ 
+      - name: Ensure permissions inside Docker container
+        run: |
+          echo "Setting proper permissions on ScaResolver inside Docker:"
+          sudo chmod 755 /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Ensure executable permissions inside Docker container
+          ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify file is executable inside Docker
+ 
+      - name: Install Homebrew and Checkmarx AST CLI
+        run: |
+          # Install Homebrew
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          # Install Checkmarx AST CLI
+          /home/linuxbrew/.linuxbrew/bin/brew install checkmarx/ast-cli/ast-cli
+ 
+      - name: Run Checkmarx AST Scan
+        run: |
+          /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
+            -s . \
+            --agent GitHub \
+            --project-name ${{ github.repository }} \
+            --branch ${GITHUB_REF##*/} \
+            --base-uri https://eu.ast.checkmarx.net/ \
+            --tenant ast_abdul_ansari \
+            --client-id HarshGJ1 \
+            --client-secret dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm \
+            --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Correct path to ScaResolver
