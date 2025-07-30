@@ -46,7 +46,7 @@ jobs:
       - name: Verify artifact location and permissions
         run: |
           echo "Listing contents of the workspace directory to verify artifact download:"
-          ls -l /home/runner/work/NeuroNurture/NeuroNurture  # Typical path for artifact downloads
+          ls -l /home/runner/work/webgoathg/webgoathg  # Typical path for artifact downloads
           echo "Listing contents of ScaResolver location:"
           ls -l /home/runner/work/webgoathg/webgoathg/ScaResolver  # Verify artifact is here
           echo "Checking if ScaResolver is an executable:"
