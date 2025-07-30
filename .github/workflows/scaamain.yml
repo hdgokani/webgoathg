@@ -23,10 +23,12 @@ jobs:
       - name: Run CxSCA Scan
         run: |
           .\ScaResolver.exe `
+            --client-id "HarGJ1" `
+            --client-secret "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
             --account "ast_abdul_ansari" `
-            --username "HarGJ1" `
-            --password "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
+            --project-name "WebGoatSCAresolver" `
+            --scan-types sca `
             --server-url "https://eu.ast.checkmarx.net" `
-            --sca-app-url "https://eu.sca.checkmarx.net" `
-            --project-name "CxSCAResolver" `
+            --include-sources . `
             --scan-path .
+
