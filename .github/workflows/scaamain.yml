@@ -19,8 +19,8 @@ jobs:
         run: |
           curl -L -o ScaResolver-musl64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-musl64.tar.gz
           tar -xzf ScaResolver-musl64.tar.gz
-          chmod +x ScaResolver
-          ./ScaResolver --help
+    #      chmod +x ScaResolver
+     #     ./ScaResolver --help
 
 
       - name: Checkmarx AST Github Action
