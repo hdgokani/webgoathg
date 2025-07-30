@@ -7,15 +7,15 @@ on:
     branches: [main]
 
 jobs:
-  cxsca-scan:
-    name: Checkmarx SCA Scan with Resolver
+  sca-scan:
+    name: CxSCA Scan using Resolver
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Set up Java (required by CxSCA Resolver)
+      - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -23,15 +23,20 @@ jobs:
 
       - name: Download CxSCA Resolver
         run: |
-          curl -LJO https://sca-downloads.s3.amazonaws.com/cli/latest/CxSCAResolver.jar
+          curl -sSL -o CxSCAResolver.jar https://sca-downloads.s3.amazonaws.com/cli/latest/CxSCAResolver.jar
+          file CxSCAResolver.jar
+          if [ ! -s CxSCAResolver.jar ]; then
+            echo "❌ Downloaded JAR is invalid or empty"
+            exit 1
+          fi
 
       - name: Run CxSCA Scan
         run: |
           java -jar CxSCAResolver.jar \
-            --client-id ${{ secrets.CX_CLIENT_ID }} \
-            --client-secret ${{ secrets.CX_CLIENT_SECRET }} \
-            --tenant ${{ secrets.CX_TENANT }} \
-            --base-uri ${{ secrets.CX_BASE_URI }} \
+            --client-id "${{ secrets.CX_CLIENT_ID }}" \
+            --client-secret "${{ secrets.CX_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.CX_TENANT }}" \
+            --base-uri "${{ secrets.CX_BASE_URI }}" \
             --project-name "${{ secrets.CX_PROJECT_NAME }}" \
             --scan-types sca \
             --include-sources .
