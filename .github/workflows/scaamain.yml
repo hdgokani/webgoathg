@@ -20,15 +20,20 @@ jobs:
           curl -L -o ScaResolver-win64.zip https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-win64.zip
           powershell -Command "Expand-Archive -Path 'ScaResolver-win64.zip' -DestinationPath '.'"
 
-      - name: Run CxSCA Scan
-        run: |
-          .\ScaResolver.exe `
-            --client-id "HarGJ1" `
-            --client-secret "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
-            --account "ast_abdul_ansari" `
-            --project-name "WebGoatSCAresolver" `
-            --scan-types sca `
-            --server-url "https://eu.ast.checkmarx.net" `
-            --include-sources . `
-            --scan-path .
-
+      - name: Checkmarx AST Github Action
+        # You may pin to the exact commit or the version.
+        # uses: Checkmarx/ast-github-action@749fec53e0db0f6404a97e2e0807c3e80e3583a7
+        uses: Checkmarx/ast-github-action@2.0.23
+        with:
+          # Provide the AST portal URL
+          base_uri: https://eu.ast.checkmarx.net
+          # Provide the Tenant for AST portal URL
+          cx_tenant: ast_abdul_ansari
+          # Client ID for AST portal authentication
+          cx_client_id: HarshGJ1
+          # Secret key for AST portal authentication
+          cx_client_secret: dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm
+          # Additional parameters for AST scan
+          additional_params: '--sca-resolver ./ScaResolver-win64'
+          # Repository name for PR decoration
+         
