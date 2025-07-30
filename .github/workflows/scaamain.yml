@@ -48,15 +48,15 @@ jobs:
           echo "Listing contents of the workspace directory to verify artifact download:"
           ls -l /home/runner/work/NeuroNurture/NeuroNurture  # Typical path for artifact downloads
           echo "Listing contents of ScaResolver location:"
-          ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify artifact is here
+          ls -l /home/runner/work/webgoathg/webgoathg/ScaResolver  # Verify artifact is here
           echo "Checking if ScaResolver is an executable:"
-          file /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify it's a valid executable
+          file /home/runner/work/webgoathg/webgoathg/ScaResolver  # Verify it's a valid executable
  
       - name: Ensure permissions inside Docker container
         run: |
           echo "Setting proper permissions on ScaResolver inside Docker:"
-          sudo chmod 755 /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Ensure executable permissions inside Docker container
-          ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify file is executable inside Docker
+          sudo chmod 755 /home/runner/work/webgoathg/webgoathg/ScaResolver  # Ensure executable permissions inside Docker container
+          ls -l /home/runner/work/webgoathg/webgoathg/ScaResolver  # Verify file is executable inside Docker
  
       - name: Install Homebrew and Checkmarx AST CLI
         run: |
