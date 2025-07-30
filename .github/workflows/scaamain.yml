@@ -70,11 +70,11 @@ jobs:
           /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
             -s . \
             --agent GitHub \
+            --scan-type sca \
             --project-name ${{ github.repository }} \
             --branch ${GITHUB_REF##*/} \
             --base-uri https://eu.ast.checkmarx.net/ \
             --tenant ast_abdul_ansari \
             --client-id HarshGJ1 \
-            --scan-type sca \
             --client-secret dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm \
             --sca-resolver /home/runner/work/webgoathg/webgoathg/ScaResolver  # Correct path to ScaResolver
