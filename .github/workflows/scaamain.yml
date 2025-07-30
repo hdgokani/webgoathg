@@ -17,8 +17,8 @@ jobs:
 
       - name: Download and extract CxSCA Resolver (Windows)
         run: |
-          curl -L -o ScaResolver-glibc64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-glibc64.tar.gz
-          tar -xzf ScaResolver-glibc64.tar.gz
+          curl -L -o ScaResolver-musl64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-musl64.tar.gz
+          tar -xzf ScaResolver-musl64.tar.gz
           chmod +x ScaResolver
           ./ScaResolver --help
 
