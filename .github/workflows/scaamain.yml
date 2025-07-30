@@ -70,8 +70,6 @@ jobs:
           /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
             -s . \
             --agent GitHub \
-            
-            --project-name ${{ github.repository }} \
             --branch ${GITHUB_REF##*/} \
             --base-uri https://eu.ast.checkmarx.net/ \
             --tenant ast_abdul_ansari \
