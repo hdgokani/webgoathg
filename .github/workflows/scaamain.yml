@@ -8,26 +8,25 @@ on:
 
 jobs:
   sca-scan:
-    name: CxSCA Scan using Resolver (Windows)
+    name: Run CxSCA Scan using Windows Resolver
     runs-on: windows-latest
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Download and unzip CxSCA Resolver (Windows)
+      - name: Download and extract CxSCA Resolver (Windows)
         run: |
-          curl -L -o ScaResolver.zip https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-win64.zip
-          tar -xf ScaResolver.zip || powershell -Command "Expand-Archive -Path ScaResolver.zip -DestinationPath ."
+          curl -L -o ScaResolver-win64.zip https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-win64.zip
+          powershell -Command "Expand-Archive -Path 'ScaResolver-win64.zip' -DestinationPath '.'"
 
-        - name: Run CxSCA Scan (Windows, Resolver v2)
-          run: |
-            .\ScaResolver.exe `
-              --account "ast_abdul_ansari" `
-              --username "HarshGJ1" `
-              --password "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
-              --server-url "https://eu.ast.checkmarx.net" `
-              --project-name "CxSCAResolver" `
-              --scan-types sca `
-              --include-sources . 
-              --scan-path .
+      - name: Run CxSCA Scan
+        run: |
+          .\ScaResolver.exe `
+            --account "ast_abdul_ansari" `
+            --username "HarGJ1" `
+            --password "dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm" `
+            --server-url "https://eu.ast.checkmarx.net" `
+            --sca-app-url "https://eu.sca.checkmarx.net" `
+            --project-name "CxSCAResolver" `
+            --scan-path .
