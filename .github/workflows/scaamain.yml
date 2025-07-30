@@ -52,9 +52,9 @@ jobs:
           echo "Checking if ScaResolver is an executable:"
           file /home/runner/work/webgoathg/webgoathg/ScaResolver  # Verify it's a valid executable
  
-      - name: Ensure permissions inside Docker container
+      - name: Setting up permissions for resover
         run: |
-          echo "Setting proper permissions on ScaResolver inside Docker:"
+          echo "Setting up proper permissions on ScaResolver:"
           sudo chmod 755 /home/runner/work/webgoathg/webgoathg/ScaResolver  # Ensure executable permissions inside Docker container
           ls -l /home/runner/work/webgoathg/webgoathg/ScaResolver  # Verify file is executable inside Docker
  
@@ -77,4 +77,5 @@ jobs:
             --client-id HarshGJ1 \
             --client-secret dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm \
             --scan-types sca \
-            --sca-resolver /home/runner/work/webgoathg/webgoathg/ScaResolver  # Correct path to ScaResolver
+            --sca-resolver /home/runner/work/webgoathg/webgoathg/ScaResolver \
+            --threshold "sca-critical=2;sca-high=1000;sca-medium=1000;sca-low=1000" 
