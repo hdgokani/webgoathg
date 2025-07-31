@@ -78,4 +78,5 @@ jobs:
             --client-secret dOhXWgcV6dy0jB3qVhqfmIn5n7pUnmrm \
             --scan-types sca \
             --sca-resolver /home/runner/work/webgoathg/webgoathg/ScaResolver \
+            --report-format sbom \
             --report-sbom-format CycloneDxJson 
