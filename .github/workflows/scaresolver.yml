@@ -2,36 +2,56 @@ name: Checkmarx SCA Scan
 
 on:
   push:
-    branches: [main]
+    branches:
+      [main]
   pull_request:
-    branches: [main]
+    branches:
+      [main]
 
 jobs:
-  cxsca-scan:
-    name: Checkmarx SCA Scan with Resolver
-    runs-on: ubuntu-latest
+  sca-scan:
+    name: Run Checkmarx AST Scan using CLI
+    runs-on: eks-prod
+    env:
+      ACTIONS_RUNNER_DEBUG: true
+      ACTIONS_STEP_DEBUG: true
 
     steps:
-      - name: Checkout code
+      - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Set up Java (required by CxSCA Resolver)
-        uses: actions/setup-java@v3
+
+      - name: Checkmarx AST Github Action
+        uses: myactions/ast-github-action@2.3.22
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          base_uri: https://ind.ast.checkmarx.net
+          cx_tenant: piramal
+          cx_client_id: cx-shobit
+          cx_client_secret: bv6spIS7Tn0IWN6kBfBt3CDQFaBrs3EJ
+          project_name: lead-service
+          additional_params: --debug --insecure
 
-      - name: Download CxSCA Resolver
-        run: |
-          curl -LJO https://sca-downloads.s3.amazonaws.com/cli/latest/CxSCAResolver.jar
 
-      - name: Run CxSCA Scan
-        run: |
-          java -jar CxSCAResolver.jar \
-            --client-id ${{ secrets.CX_CLIENT_ID }} \
-            --client-secret ${{ secrets.CX_CLIENT_SECRET }} \
-            --tenant ${{ secrets.CX_TENANT }} \
-            --base-uri ${{ secrets.CX_BASE_URI }} \
-            --project-name "${{ secrets.CX_PROJECT_NAME }}" \
-            --scan-types sca \
-            --include-sources .
+#      - name: Run Checkmarx AST Scan
+#        run: |
+#         /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
+#            -s https://github.com/hdgokani/lead-service \
+#            --agent GitHub \
+#            --project-name ${{ github.repository }} \
+#            --branch ${GITHUB_REF##*/} \
+#            --base-uri https://ind.ast.checkmarx.net/ \
+#            --tenant piramal \
+#            --client-id cx-shobit \                                        #
+#            --client-secret bv6spIS7Tn0IWN6kBfBt3CDQFaBrs3EJ \
+#            --scan-types sca \
+#            --sca-resolver /home/runner/_work/lead-service/lead-service/ScaResolver \
+#            --report-format sbom \ 
+#            --report-sbom-format CycloneDxJson \
+#            --threshold "sca-critical=2;sca-high=1000;sca-medium=1000;sca-low=1000" 
+
+
+
+
+
+#bv6spIS7Tn0IWN6kBfBt3CDQFaBrs3EJ
+#cx-shobit
