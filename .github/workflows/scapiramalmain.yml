@@ -1,0 +1,58 @@
+name: Checkmarx SCA Scan
+
+on:
+  push:
+    branches:
+      [main]
+  pull_request:
+    branches:
+      [main]
+
+jobs:
+
+  sca-scan:
+    name: Run Checkmarx AST Scan using CLI
+    runs-on: eks-prod
+    env:
+      ACTIONS_RUNNER_DEBUG: true
+      ACTIONS_STEP_DEBUG: true
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+
+      - name: Checkmarx AST Github Action
+        uses: myactions/ast-github-action@2.3.22
+        with:
+          base_uri: https://ind.ast.checkmarx.net
+          cx_tenant: piramal
+          cx_client_id: cx-shobit
+          cx_client_secret: bv6spIS7Tn0IWN6kBfBt3CDQFaBrs3EJ
+          project_name: lead-service
+          additional_params: --debug --insecure
+
+
+#      - name: Run Checkmarx AST Scan
+#        run: |
+#         /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
+#            -s https://github.com/hdgokani/lead-service \
+#            --agent GitHub \
+#            --project-name ${{ github.repository }} \
+#            --branch ${GITHUB_REF##*/} \
+#            --base-uri https://ind.ast.checkmarx.net/ \
+#            --tenant piramal \
+#            --client-id cx-shobit \                                        #
+#            --client-secret bv6spIS7Tn0IWN6kBfBt3CDQFaBrs3EJ \
+#            --scan-types sca \
+#            --sca-resolver /home/runner/_work/lead-service/lead-service/ScaResolver \
+#            --report-format sbom \ 
+#            --report-sbom-format CycloneDxJson \
+#            --threshold "sca-critical=2;sca-high=1000;sca-medium=1000;sca-low=1000" 
+
+
+
+
+
+#bv6spIS7Tn0IWN6kBfBt3CDQFaBrs3EJ
+#cx-shobit
